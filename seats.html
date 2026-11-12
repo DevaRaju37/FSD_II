@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block title %}Choose seats | CineBook{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('movie_detail',movie_id=0) }}" onclick="history.back();return false">← Back</a>
+<div class="booking-heading"><span class="eyebrow">ALMOST THERE</span><h1>Pick your seats</h1><p>{{ show.title }} · {{ show.theatre_name }} · {{ show.show_date.strftime('%d %b %Y') }} at {{ show.show_time.strftime('%I:%M %p') }}</p></div>
+<form method="post" action="{{ url_for('book',show_id=show.id) }}" id="seat-form">
+  <div class="screen-wrap"><div class="screen"></div><span>SCREEN THIS WAY</span></div>
+  <div class="seat-legend"><span><i class="seat-sample"></i> Available</span><span><i class="seat-sample selected-sample"></i> Selected</span><span><i class="seat-sample booked-sample"></i> Booked</span></div>
+  <div class="seat-map">{% for seat in seats %}
+    <label class="seat-label {% if seat.id in booked %}is-booked{% endif %} {% if seat.seat_type=='PREMIUM' %}premium{% endif %}">
+      <input type="checkbox" name="seats" value="{{ seat.id }}" data-price="{{ show.price }}" {% if seat.id in booked %}disabled{% endif %}>
+      <span>{{ seat.seat_number }}</span>
+    </label>
+  {% endfor %}</div>
+  <div class="booking-summary"><div><span class="muted">Selected seats</span><strong id="selected-count">0 seats</strong></div><div><span class="muted">Total amount</span><strong class="total" id="total-price">₹0</strong></div><button class="btn btn-primary" type="submit">Continue to payment <span>→</span></button></div>
+  <p class="demo-note">Demo checkout: payment is simulated for this academic project. No real payment will be collected.</p>
+</form>
+{% endblock %}

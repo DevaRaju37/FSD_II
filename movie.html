@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block title %}{{ movie.title }} | CineBook{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('index') }}">← All movies</a>
+<section class="detail-layout">
+  <div class="detail-poster">{% if movie.poster_url %}<img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster" onerror="this.style.display='none'">{% endif %}<div class="poster-fallback detail-fallback"><span>▶</span><small>NOW SHOWING</small></div></div>
+  <div class="detail-copy"><span class="eyebrow">FEATURED FILM</span><h1>{{ movie.title }}</h1><div class="meta"><span>★ {{ movie.rating or 'NR' }}</span><span>{{ movie.genre }}</span><span>{{ movie.duration }}</span><span>{{ movie.language }}</span></div><p class="description">{{ movie.description }}</p>
+  <h2 class="subheading">Choose your show</h2>
+  <div class="show-list">{% for show in shows %}
+    <div class="show-card"><div><strong>{{ show.theatre_name }}</strong><small>{{ show.location }}</small><small>{{ show.show_date.strftime('%d %b %Y') }} · {{ show.show_time.strftime('%I:%M %p') }}</small></div><div class="show-action"><strong>₹{{ '%.0f'|format(show.price) }}</strong><a class="btn btn-primary btn-small" href="{{ url_for('seats',show_id=show.id) }}">Select seats</a></div></div>
+  {% else %}<p class="muted">No upcoming shows are scheduled for this movie.</p>{% endfor %}</div>
+  </div>
+</section>
+{% endblock %}

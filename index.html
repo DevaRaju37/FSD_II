@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% block title %}CineBook | Discover movies{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy"><span class="eyebrow">YOUR CINEMA, YOUR SEAT</span><h1>Big stories.<br><em>Better seats.</em></h1>
+  <p>Discover what's playing and book your next big-screen experience.</p><a class="btn btn-primary" href="#now-showing">Explore movies <span>↗</span></a></div>
+  <div class="hero-art"><div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div><div class="ticket-art"><span>ADMIT ONE</span><strong>01</strong><small>THE SHOW STARTS SOON</small></div><div class="hero-glow"></div></div>
+</section>
+<section id="now-showing" class="section-head"><div><span class="eyebrow">CURATED FOR YOU</span><h2>Now showing</h2></div><span class="muted">{{ movies|length }} movies available</span></section>
+<div class="movie-grid">
+{% for movie in movies %}
+  <article class="movie-card">
+    <a class="poster-wrap" href="{{ url_for('movie_detail',movie_id=movie.id) }}">
+      {% if movie.poster_url %}<img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">{% endif %}
+      <div class="poster-fallback" {% if movie.poster_url %}style="display:none"{% endif %}><span>▶</span><small>CINEBOOK ORIGINAL</small></div>
+      <span class="rating">★ {{ movie.rating or 'NR' }}</span>
+    </a>
+    <div class="movie-info"><div><h3>{{ movie.title }}</h3><p>{{ movie.genre }} · {{ movie.duration }}</p></div><a class="round-arrow" href="{{ url_for('movie_detail',movie_id=movie.id) }}">↗</a></div>
+  </article>
+{% else %}<p>No movies are available right now.</p>{% endfor %}
+</div>
+{% endblock %}
